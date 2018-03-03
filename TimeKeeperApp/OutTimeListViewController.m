@@ -127,6 +127,10 @@
             cell.workingTimeLabel.textAlignment = NSTextAlignmentRight;
             cell.workingTimeLabel.text = [NSString stringWithFormat:@"%@H", workingTimeArray[indexPath.row]];
             
+            if (_inputtedDataArray.count == 0) {
+                cell.inputtedImageView.hidden = YES;
+            }
+            
             for (int i = 0; i < _inputtedDataArray.count; i++) { // add 20180131
                 if ([cell.outTimeDateLabel.text isEqualToString: _inputtedDataArray[i]]) {
                     cell.inputtedImageView.hidden = NO;
