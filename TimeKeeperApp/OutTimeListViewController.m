@@ -118,15 +118,25 @@
             cell.workingTimeLabel.frame = CGRectMake(200, 13, 60, 20); // 勤務時間
             // 出社時間
             [cell.contentView addSubview:cell.inTimeLabel];// contentViewを忘れないこと
-            NSString *inTime = [NSString stringWithFormat:@"%@〜", inTimeArray[indexPath.row]];
-            cell.inTimeLabel.text = inTime;
+            
+            if (![@""isEqualToString:inTimeArray[indexPath.row]]) {
+                cell.inTimeLabel.text = [NSString stringWithFormat:@"%@〜", inTimeArray[indexPath.row]];
+            } else {
+                cell.inTimeLabel.text = @"";
+            }
+            
             // 退勤時間
             cell.outTimeLabel.text = outTimeArray[indexPath.row];
             // 勤務時間
             [cell.contentView addSubview:cell.workingTimeLabel];// contentViewを忘れないこと
             cell.workingTimeLabel.textAlignment = NSTextAlignmentRight;
-            cell.workingTimeLabel.text = [NSString stringWithFormat:@"%@H", workingTimeArray[indexPath.row]];
             
+            if (![@"" isEqualToString:workingTimeArray[indexPath.row]]) {
+                cell.workingTimeLabel.text = [NSString stringWithFormat:@"%@H", workingTimeArray[indexPath.row]];
+            } else {
+                cell.workingTimeLabel.text = @"";
+            }
+           
             if (_inputtedDataArray.count == 0) {
                 cell.inputtedImageView.hidden = YES;
             }

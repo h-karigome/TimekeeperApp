@@ -344,10 +344,10 @@
                                    BOOL result = [OutTimeDataManager insertOutDateTime:selectedDateString inTime:@"10:00" outTime:selectedTimeString outMonth:selectedMonthString outDateForTab:selectedDateForTabString];
                                    // add 20180131
                                    NSMutableArray *resultArr = [NSMutableArray array];
-//                                   if (![lastInputStr isEqualToString:selectedDateString]) {
-//                                       resultArr = [OutTimeDataManager getInsertDateArray
-//                                        :lastInputStr inputDateStr:selectedDateString outMonthStr:selectedMonthString outDateStr:selectedDateForTabString];
-//                                   }
+                                   if (![lastInputStr isEqualToString:selectedDateString]) {
+                                       resultArr = [OutTimeDataManager getInsertDateArray
+                                        :lastInputStr inputDateStr:selectedDateString outMonthStr:selectedMonthString outDateStr:selectedDateForTabString];
+                                   }
 //
                                    NSLog(@"************:%@",resultArr);
                                    for (int i = 0; i < resultArr.count; i++) {

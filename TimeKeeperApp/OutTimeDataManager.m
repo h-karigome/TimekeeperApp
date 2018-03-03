@@ -220,7 +220,7 @@ static NSString* const DB_NAME = @"tbr_work_info.db";
     NSString *dir   = [paths objectAtIndex:0];
     FMDatabase *db= [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:DB_NAME]];
     NSString *sql = [[NSString alloc] initWithFormat:
-                     @"SELECT out_date_info FROM tbr_out_time WHERE out_date_info = '%@' ", outDateInfo];
+                     @"SELECT out_date_info FROM tbr_out_time WHERE out_date_info = '%@' AND delete_flg = '0'", outDateInfo];
         
     [db open];
     FMResultSet *results = [db executeQuery:sql];
@@ -360,7 +360,8 @@ static NSString* const DB_NAME = @"tbr_work_info.db";
         
         NSString *insertDateStr = [NSString stringWithFormat:@"%@",[formatterForDate stringFromDate:nextDate]];
         
-        if (![insertDateStr isEqualToString:inputDateStr]) { // add 20180220
+        NSLog(@"insertDateStr:%@", insertDateStr);
+        if (![insertDateInfoStr isEqualToString:inputDateStr]) { // add 20180220
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             [dic setObject:insertDateInfoStr forKey:@"out_date_info"];
             [dic setObject:outMonthStr forKey:@"out_month"];
