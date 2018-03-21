@@ -20,7 +20,8 @@
 @implementation OutTimeDataManager
 static NSString* const DB_FILE = @"/app.sqlite";
 static NSString* const DB_NAME = @"tbr_work_info.db";
-
+static NSString* const FIRST_DAY_UNIT_MONTH = @"15";
+static NSString* const LAST_DAY_UNIT_MONTH = @"16";
 
 // テーブル作成
 +(void)testCreateDBfile {
@@ -213,6 +214,58 @@ static NSString* const DB_NAME = @"tbr_work_info.db";
     return array;
 }
 
+
+/**
+ 勤怠情報取得(15日締めの時)
+
+ @param firstDayStr 勤怠表示日初日(16日)
+ @param lastDayStr 勤怠表示日最終日(15日)
+ @return 勤怠情報
+ */
++(NSMutableArray *)selectOutDateInfoForUnitMonth:(NSString *)firstDayStr
+                                        lastDayStr:(NSString *)lastDayStr {
+    //DBファイルのパス
+    NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
+    NSString *dir   = [paths objectAtIndex:0];
+    FMDatabase *db= [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:DB_NAME]];
+    NSString *select = [[NSString alloc] initWithFormat:
+                        @"SELECT *FROM tbr_out_time "
+                        "WHERE out_date_info "
+                        "BETWEEN '%@' AND '%@' "
+                        "AND delete_flg = '0' "
+                        "order by "
+                        "out_date_info"
+                        ,firstDayStr, lastDayStr];
+    
+    [db open];
+    
+    FMResultSet *results = [db executeQuery:select];
+    NSMutableArray *resultArray = [NSMutableArray array];
+    
+    while ([results next]) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:[results stringForColumn:@"out_date_info"] forKey:@"out_date_info"];
+        [dic setValue:[results stringForColumn:@"out_month"] forKey:@"out_month"];
+        [dic setValue:[results stringForColumn:@"out_date"] forKey:@"out_date"];
+        [dic setValue:[results stringForColumn:@"work_time"] forKey:@"work_time"];
+        [dic setValue:[results stringForColumn:@"in_time"] forKey:@"in_time"];
+        [dic setValue:[results stringForColumn:@"out_time"] forKey:@"out_time"];
+        
+        [resultArray addObject:dic];
+    }
+    
+    if ([db hadError]) {
+        [db close];
+        return nil;
+    }
+    [db close];
+    
+    return resultArray;
+}
+
+
+
+
 // 上書きチェック
 +(BOOL)checkOutDateTime:(NSString *)outDateInfo {
     //DBファイルのパス
@@ -391,5 +444,81 @@ static NSString* const DB_NAME = @"tbr_work_info.db";
     NSMutableArray *arr = [OutTimeDataManager selectOutDateTime:monthStr];
     return [arr.lastObject objectForKey:@"out_date_info"];
 }
+
+/**
+ 指定月の16日(勤怠の月初め)を取得
+
+ @param month 指定月
+ @return 指定月の16日のout_date_info
+ */
++(NSString *)selectFirstDayForUnitMonth:(NSString *)month {
+    //DBファイルのパス
+    NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
+    NSString *dir   = [paths objectAtIndex:0];
+    FMDatabase *db= [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:DB_NAME]];
+    
+    NSString *select = [[NSString alloc] initWithFormat:
+                        @"SELECT out_date_info "
+                        "FROM tbr_out_time "
+                        "WHERE out_date like '%@%@' "
+                        "AND out_month = '%@' "
+                        "AND delete_flg = '0'",FIRST_DAY_UNIT_MONTH,@"___", month];
+    [db open];
+    
+    FMResultSet *results = [db executeQuery:select];
+    
+    NSString *resultStr = @"";
+    while ([results next]) {
+        resultStr = [results stringForColumn:@"out_date_info"];
+    }
+    
+    if ([db hadError]) {
+        [db close];
+        return nil;
+    }
+    [db close];
+    
+    return resultStr;
+}
+
+
+
+/**
+ 指定月の15日(月終わり)を取得
+ 
+ @param month 指定月
+ @return 指定月の15日のout_date_info
+ */
++(NSString *)selectLastDayForUnitMonth:(NSString *)month {
+    //DBファイルのパス
+    NSArray *paths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
+    NSString *dir   = [paths objectAtIndex:0];
+    FMDatabase *db= [FMDatabase databaseWithPath:[dir stringByAppendingPathComponent:DB_NAME]];
+    
+    NSString *select = [[NSString alloc] initWithFormat:
+                        @"SELECT out_date_info "
+                        "FROM tbr_out_time "
+                        "WHERE out_date like '%@%@' "
+                        "AND out_month = '%@' "
+                        "AND delete_flg = '0'",LAST_DAY_UNIT_MONTH, @"___", month];
+    [db open];
+    
+    FMResultSet *results = [db executeQuery:select];
+    
+    NSString *resultStr = @"";
+    while ([results next]) {
+        resultStr = [results stringForColumn:@"out_date_info"];
+    }
+    
+    if ([db hadError]) {
+        [db close];
+        return nil;
+    }
+    [db close];
+    
+    return resultStr;
+}
+
+
 
 @end

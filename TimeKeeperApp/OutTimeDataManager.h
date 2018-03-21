@@ -20,6 +20,8 @@
 +(void) testDrop;
 
 +(NSMutableArray *)selectOutDateTime:(NSString *)monthString;
++(NSMutableArray *)selectOutDateInfoForUnitMonth:(NSString *)firstDayStr
+                                        lastDayStr:(NSString *)lastDayStr;
 +(void)addColumnTest; // カラムの追加
 //+(void)updateColumnTest; // カラムの値の更新
 +(void)updateInTime:(NSString *)inTime outDateInfo:(NSString *)outDateInfo; // 出勤時間の更新
@@ -33,7 +35,9 @@
            inputDateStr:(NSString *)inputDateStr
             outMonthStr:(NSString *)outMonthStr
              outDateStr:(NSString *)outDateStr;
-// 20180131
+
++(NSString *)selectFirstDayForUnitMonth:(NSString *)month; // 指定月の16日のout_date_infoを取得
++(NSString *)selectLastDayForUnitMonth:(NSString *)month;// 指定月の15日のout_date_infoを取得
 +(NSString *)selectLastInputDateStr:(NSString *)monthStr;
 
 // 20180220

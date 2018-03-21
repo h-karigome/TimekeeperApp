@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface SettingViewController : UITableViewController
-
 @end
+
+// 設定スイッチ(月別/15日締め)
+// TODO: 名前どうしたらいいかわからない。名前考える。
+static NSString *const keyMonthSettingSwitch = @"keyMonthSetting";
+static NSString *const byMonthSetting = @"byMonthSetting"; // 月別
+static NSString *const monthSettingEndDayIs15 = @"monthSettingEndDayIs15"; // 15日締め

@@ -13,6 +13,7 @@
 #import "PopupDatePickerViewController.h"
 #import "OutTimeObject.h"
 #import "TextDataManager.h"
+#import "SettingViewController.h"
 
 @interface OutTimeListViewController()<UITableViewDelegate, UITableViewDataSource>
 
@@ -39,7 +40,7 @@
     nowMonthString = [OutTimeObject getNowDateForTab];
     // TODO:タブに表示する月を取得だったけどタブに表示しなくなったので名前要変更
     outMonthString = nowMonthString;// 初期表示時は現在の月のデータを表示
-    [self getOutTimeDataList]; // 退勤データ一覧情報の取得
+    [self selectOutTimeDataList]; // 退勤データ一覧情報の取得
     NSLog(@"viewDidLoad*******");
     
     isDisplayedIcon = NO; // 初期遷移時はアイコン表示でない
@@ -313,14 +314,37 @@
 /**
  * 退勤リスト表示用のデータ取得
  */
--(void) getOutTimeDataList {
+-(void) selectOutTimeDataList {
+    
     selectOutArray = [[NSMutableArray alloc] init];
-    selectOutArray = [OutTimeDataManager selectOutDateTime:nowMonthString];
     outDateInfoArray = [[NSMutableArray alloc] init]; //情報入力画面に渡すよう
     _outDateArray = [[NSMutableArray alloc] init];
     inTimeArray = [[NSMutableArray alloc] init];
     outTimeArray = [[NSMutableArray alloc] init];
     workingTimeArray = [[NSMutableArray alloc] init];
+    
+    
+    NSString *settingMonthDisplayStr = [[NSUserDefaults standardUserDefaults] objectForKey:keyMonthSettingSwitch];
+    // 15日締めの時
+    if ([monthSettingEndDayIs15 isEqualToString:settingMonthDisplayStr]) {
+        
+        NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy年MM月"];
+        NSDate *nowDate = [formatter dateFromString:outMonthString];
+        // タイトルラベルの前月のデータを取得
+        outMonthString = [OutTimeObject getLastMonth:nowDate];
+        
+        NSString *firstDayStr = [OutTimeDataManager selectFirstDayForUnitMonth:outMonthString];
+        
+        // ???:なんでこれは引数NSDateにしたんや
+        NSString *lastMonthStr = [OutTimeObject getNowMonthForTab];
+        NSString *lastDayStr = [OutTimeDataManager selectLastDayForUnitMonth:lastMonthStr];
+        
+        selectOutArray = [OutTimeDataManager selectOutDateInfoForUnitMonth:firstDayStr lastDayStr:lastDayStr];
+    } else {
+        // それ以外(月別)の時
+        selectOutArray = [OutTimeDataManager selectOutDateTime:nowMonthString];  
+    }
     
     for (int i = 0; i < selectOutArray.count ; i++) {
         outMonthString = [selectOutArray[0] objectForKey:@"out_month"];
@@ -330,6 +354,7 @@
         [inTimeArray addObject:[selectOutArray[i] objectForKey:@"in_time"]];
         [workingTimeArray addObject:[selectOutArray[i] objectForKey:@"work_time"]];
     }
+
     // りんご(退勤時間アイコン)の取得
     displayIconArray = [[NSMutableArray alloc] init];
     NSMutableDictionary *dic = [self countApple];

@@ -29,19 +29,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [TextDataManager selectTodoList:@"2017年11月"];
+    // テーブルの作成
+//    [OutTimeDataManager testCreateDBfile];
+//    [OutTimeDataManager addColumnTest];
 //    [TextDataManager testCreateTodoDBfile];
+//    [TextDataManager testCreateInpuDataDBfile];
+//    [TextDataManager selectTodoList:@"2017年11月"];
 //    [TextDataManager addColumnTest]; // add 20171117
+    
+    
 //    [OutTimeObject test];
 //    [OutTimeObject lastDayOfMonth];
 //    [OutTimeObject lastDayOfMonth2];
 //    [TextDataManager testDrop];
-//    [TextDataManager testCreateInpuDataDBfile];
+
 //    [OutTimeDataManager addColumnTest];
 //    [OutTimeDataManager updateColumnTest];
 
-    [OutTimeDataManager deleteOutDateTime:@"2018/02/17(土)"];
-    [OutTimeDataManager deleteOutDateTime:@"2018/02/18(日)"];
+//    [OutTimeDataManager deleteOutDateTime:@"2018/02/17(土)"];
+//    [OutTimeDataManager deleteOutDateTime:@"2018/03/05(月)"];
     UIImage *image = [UIImage imageNamed:@"ringo.png"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     [self.view addSubview:imageView];

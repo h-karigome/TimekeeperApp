@@ -245,27 +245,31 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="7rM-2v-2wS">
-                                                    <rect key="frame" x="230" y="18" width="106" height="29"/>
-                                                    <segments>
-                                                        <segment title="First"/>
-                                                        <segment title="Second"/>
-                                                    </segments>
-                                                </segmentedControl>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="表示：月ごと/15日締め" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27C-Di-d91">
                                                     <rect key="frame" x="33" y="22" width="179" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="7rM-2v-2wS">
+                                                    <rect key="frame" x="222" y="16" width="137" height="29"/>
+                                                    <segments>
+                                                        <segment title="月別"/>
+                                                        <segment title="15日締め"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="changeMonthDisplaySetting:" destination="exV-YP-ftL" eventType="valueChanged" id="9Gc-Il-wLH"/>
+                                                    </connections>
+                                                </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="7rM-2v-2wS" firstAttribute="top" secondItem="ecI-s3-NRd" secondAttribute="topMargin" constant="7" id="6G5-R5-D03"/>
-                                                <constraint firstItem="7rM-2v-2wS" firstAttribute="leading" secondItem="27C-Di-d91" secondAttribute="trailing" constant="18" id="6qS-Yh-ZLd"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="7rM-2v-2wS" secondAttribute="trailing" constant="23" id="ciI-bv-xQe"/>
+                                                <constraint firstItem="7rM-2v-2wS" firstAttribute="top" secondItem="ecI-s3-NRd" secondAttribute="topMargin" constant="5" id="21H-Ph-U7s"/>
+                                                <constraint firstItem="7rM-2v-2wS" firstAttribute="trailing" secondItem="ecI-s3-NRd" secondAttribute="trailingMargin" id="6JY-Uh-scN"/>
+                                                <constraint firstItem="7rM-2v-2wS" firstAttribute="leading" secondItem="27C-Di-d91" secondAttribute="trailing" constant="10" id="TEP-bB-ucj"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="27C-Di-d91" secondAttribute="bottom" constant="11" id="jc8-gf-U95"/>
                                                 <constraint firstItem="27C-Di-d91" firstAttribute="top" secondItem="ecI-s3-NRd" secondAttribute="topMargin" constant="11" id="qEM-fX-x4f"/>
                                                 <constraint firstItem="27C-Di-d91" firstAttribute="leading" secondItem="ecI-s3-NRd" secondAttribute="leadingMargin" constant="17" id="rK1-zR-oQk"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="7rM-2v-2wS" secondAttribute="bottom" constant="5" id="yhn-w6-bTT"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -346,6 +350,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="displayMonthSettingSegment" destination="7rM-2v-2wS" id="vg8-Gm-9HW"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZFS-Ib-Mq5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
